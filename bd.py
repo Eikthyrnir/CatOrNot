@@ -7,23 +7,61 @@ def get_connect():
             id              INTEGER PRIMARY KEY,
             tg_file_id      INTEGER NOT NULL,
             user_id         INTEGER NOT NULL,
-            is_cat          BLOB NOT NULL,
+            is_cat          INTEGER NOT NULL,
             uploaded_at     INTEGER NOT NULL
         )"""
         cursor.execute(query)
         db.commit()
 
-def get_max_id():
+def get_max_id(id):
     with sqlite3.connect('bd/file.db') as db:
         cursor = db.cursor()
         query = """SELECT id FROM images ORDER BY id DESC LIMIT 1"""
         cursor.execute(query)
-        for row in cursor:
-            for elem in row:
-                maxVal = elem
+        result = cursor.fetchall()
+        for i in result:
+            maxVal = i[0]
         db.commit()
         return maxVal
 
+def true_answers(id):
+    with sqlite3.connect('bd/file.db') as db:
+        cursor = db.cursor()
+        query = """ SELECT is_cat, user_id FROM images WHERE is_cat=1"""
+        cursor.execute(query)
+        result = cursor.fetchall()
+        sum = 0
+        for i in result:
+            if i[1]==id:
+                sum = sum + 1
+        db.commit()
+        return sum
+
+def false_answers(id):
+    with sqlite3.connect('bd/file.db') as db:
+        cursor = db.cursor()
+        query = """ SELECT is_cat, user_id FROM images WHERE is_cat=0"""
+        cursor.execute(query)
+        result = cursor.fetchall()
+        sum = 0
+        for i in result:
+            if i[1]==id:
+                sum = sum + 1
+        db.commit()
+        return sum
+
+def all_photos(id):
+    with sqlite3.connect('bd/file.db') as db:
+        cursor = db.cursor()
+        query = """ SELECT id, user_id FROM images"""
+        cursor.execute(query)
+        result = cursor.fetchall()
+        sum = 0
+        for i in result:
+            if i[1]==id:
+                sum = sum + 1
+        db.commit()
+        return sum
 
 def insert_data(id,tg_file_id, user_id, is_cat, uploaded_at):
     with sqlite3.connect('bd/file.db') as db:
