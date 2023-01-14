@@ -27,41 +27,29 @@ def get_connect():
 def true_answers(id):
     with sqlite3.connect('bd/file.db') as db:
         cursor = db.cursor()
-        query = """ SELECT is_cat, user_id FROM images WHERE is_cat=1"""
-        cursor.execute(query)
-        result = cursor.fetchall()
-        sum = 0
-        for i in result:
-            if i[1]==id:
-                sum = sum + 1
+        query = """ SELECT COUNT(*) FROM images WHERE is_cat=1 AND user_id = ?"""
+        cursor.execute(query, (id,))
+        result = cursor.fetchall()[0]
         db.commit()
-        return sum
+        return result[0]
 
 def false_answers(id):
     with sqlite3.connect('bd/file.db') as db:
         cursor = db.cursor()
-        query = """ SELECT is_cat, user_id FROM images WHERE is_cat=0"""
-        cursor.execute(query)
-        result = cursor.fetchall()
-        sum = 0
-        for i in result:
-            if i[1]==id:
-                sum = sum + 1
+        query = """ SELECT COUNT(*) FROM images WHERE is_cat=0 AND user_id = ?"""
+        cursor.execute(query, (id,))
+        result = cursor.fetchall()[0]
         db.commit()
-        return sum
+        return result[0]
 
 def all_photos(id):
     with sqlite3.connect('bd/file.db') as db:
         cursor = db.cursor()
-        query = """ SELECT id, user_id FROM images"""
-        cursor.execute(query)
-        result = cursor.fetchall()
-        sum = 0
-        for i in result:
-            if i[1]==id:
-                sum = sum + 1
+        query = """ SELECT COUNT(*) FROM images WHERE user_id = ?"""
+        cursor.execute(query, (id,))
+        result = cursor.fetchall()[0]
         db.commit()
-        return sum
+        return result[0]
 
 def insert_data(tg_file_id, user_id, is_cat, uploaded_at):
     with sqlite3.connect('bd/file.db') as db:
