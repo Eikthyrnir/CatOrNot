@@ -1,11 +1,9 @@
 import os
 import threading
 import sqlite3
-
-from main_cat_recognizer import CATorNOT
+from keras_cat_recognizer import KerasCatRecognizer
 import telebot, time
 from bd import *
-# from cat_recognizer import CatRecognizer
 
 bot = telebot.TeleBot('5982274359:AAHBxZM7_42LBESOhsL_EnvDm_6b3GAWGOM')
 get_connect()
@@ -22,13 +20,6 @@ def message_time_as_str(message):
     str_time = time.strftime("%H:%M:%S %d.%m.%Y", time.localtime(message))
     return str_time
 
-# class AlwaysFalseRecognizer(CatRecognizer):
-#     def is_cat(self, image_path: str) -> bool:
-#         return False
-#
-# cat_recognizer = AlwaysFalseRecognizer()
-
-
 def get_user_id(message):
     return message.from_user.id
 
@@ -38,12 +29,17 @@ def save_img_recognition_results(message, is_cat):
     uploaded_at = message_time_as_str(message.date)
     insert_data(tg_file_id, user_id, is_cat, uploaded_at)
 
+recognition_answers = {True:  'Cat',
+                       False: 'Not a cat'}
+
+cat_recognizer = KerasCatRecognizer()
+
 @bot.message_handler(content_types=['photo'])
 def photo(message):
     file_name = download_photo(message)
-    is_cat = CATorNOT(file_name)
+    is_cat = cat_recognizer.is_cat(file_name)
     save_img_recognition_results(message, is_cat)
-    bot.send_message(message.chat.id, is_cat)
+    bot.send_message(message.chat.id, recognition_answers[is_cat])
     os.remove(file_name)
 
 
