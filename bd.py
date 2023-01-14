@@ -13,16 +13,16 @@ def get_connect():
         cursor.execute(query)
         db.commit()
 
-def get_max_id(id):
-    with sqlite3.connect('bd/file.db') as db:
-        cursor = db.cursor()
-        query = """SELECT id FROM images ORDER BY id DESC LIMIT 1"""
-        cursor.execute(query)
-        result = cursor.fetchall()
-        for i in result:
-            maxVal = i[0]
-        db.commit()
-        return maxVal
+# def get_max_id(id):
+#     with sqlite3.connect('bd/file.db') as db:
+#         cursor = db.cursor()
+#         query = """SELECT id FROM images ORDER BY id DESC LIMIT 1"""
+#         cursor.execute(query)
+#         result = cursor.fetchall()
+#         for i in result:
+#             maxVal = i[0]
+#         db.commit()
+#         return maxVal
 
 def true_answers(id):
     with sqlite3.connect('bd/file.db') as db:
@@ -63,10 +63,10 @@ def all_photos(id):
         db.commit()
         return sum
 
-def insert_data(id,tg_file_id, user_id, is_cat, uploaded_at):
+def insert_data(tg_file_id, user_id, is_cat, uploaded_at):
     with sqlite3.connect('bd/file.db') as db:
         cursor = db.cursor()
-        query = """ INSERT INTO images(id, tg_file_id, user_id, is_cat, uploaded_at) VALUES (?,?,?,?,?);"""
-        cursor.execute(query, (id, tg_file_id, user_id, is_cat, uploaded_at))
+        query = """ INSERT INTO images(tg_file_id, user_id, is_cat, uploaded_at) VALUES (?,?,?,?);"""
+        cursor.execute(query, (tg_file_id, user_id, is_cat, uploaded_at))
         db.commit()
 

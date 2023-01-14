@@ -33,8 +33,8 @@ def take_and_insert_variables(message, file_name):
     user_id = get_user_id(message)
     is_cat = CATorNOT(tg_file_id)
     uploaded_at = tconv(message.date)
-    max_id = get_max_id(user_id)
-    insert_data(max_id+1,tg_file_id, user_id, is_cat, uploaded_at)
+    # max_id = get_max_id(user_id)
+    insert_data(tg_file_id, user_id, is_cat, uploaded_at)
     return is_cat
 
 @bot.message_handler(content_types=['photo'])
