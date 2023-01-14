@@ -5,10 +5,10 @@ def get_connect():
         cursor = db.cursor()
         query = """ CREATE TABLE IF NOT EXISTS images(
             id              INTEGER PRIMARY KEY,
-            tg_file_id      INTEGER NOT NULL,
+            tg_file_id      VARCHAR NOT NULL,
             user_id         INTEGER NOT NULL,
             is_cat          INTEGER NOT NULL,
-            uploaded_at     INTEGER NOT NULL
+            uploaded_at     VARCHAR NOT NULL
         )"""
         cursor.execute(query)
         db.commit()
