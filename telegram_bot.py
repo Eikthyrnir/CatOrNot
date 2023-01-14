@@ -73,13 +73,13 @@ def count_cats(message):
     bot.send_message(message.chat.id, 'You sent '+ '<b>'+str(sum)+'</b>'+' photos with Cats', parse_mode = 'html')
 
 @bot.message_handler(commands = ['Count_NotCats'])
-def count_NotCats(message):
+def count_not_cats(message):
     user_id = get_user_id(message)
     sum = false_answers(user_id)
     bot.send_message(message.chat.id, 'You sent '+ '<b>'+str(sum)+'</b>'+' photos where no Cats', parse_mode = 'html')
 
 @bot.message_handler(commands = ['Count_sent_photos'])
-def count_AllCats(message):
+def count_all_cats(message):
     user_id = get_user_id(message)
     sum = all_photos(user_id)
     bot.send_message(message.chat.id, 'You sent '+ '<b>'+str(sum)+'</b>'+' of all the time', parse_mode = 'html')
