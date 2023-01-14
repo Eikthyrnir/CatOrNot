@@ -10,8 +10,8 @@ tconv = lambda x: time.strftime("%H:%M:%S %d.%m.%Y", time.localtime(x))
 bot = telebot.TeleBot('5982274359:AAHBxZM7_42LBESOhsL_EnvDm_6b3GAWGOM')
 get_connect()
 def download_photo(message):
-    fileID = message.photo[-1].file_id
-    file_info = bot.get_file(fileID)
+    file_id = message.photo[-1].file_id
+    file_info = bot.get_file(file_id)
     downloaded_file = bot.download_file(file_info.file_path)
     dest = str(threading.get_ident())
     with open(dest, 'wb') as new_file:

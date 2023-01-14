@@ -1,4 +1,4 @@
-CatOrNot
+[CatOrNot](https://t.me/CatOrNotbot)
 ===============
 
 CatOrNot is a [Telegram](https://telegram.org/) 
