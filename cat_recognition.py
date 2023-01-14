@@ -1,8 +1,11 @@
 from tensorflow import keras
+from cat_recognizer import CatRecognizer
 import numpy as np
 import cv2
 
-class CatRecognizer:
+
+class MyCatRecognizer(CatRecognizer):
+
     def is_cat(self, image_path: str) -> bool:
         model = keras.applications.VGG16()
 
@@ -22,5 +25,5 @@ class CatRecognizer:
 
 # img_dir = 'image_dir/photo_2022-12-18_15-03-48.jpg'
 
-# CatRecognizer1 = CatRecognizer()
+# CatRecognizer1 = MyCatRecognizer()
 # print(CatRecognizer1.is_cat('image_dir/photo_2022-12-18_15-03-48.jpg'))
