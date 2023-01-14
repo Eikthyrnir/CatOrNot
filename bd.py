@@ -13,16 +13,6 @@ def get_connect():
         cursor.execute(query)
         db.commit()
 
-# def get_max_id(id):
-#     with sqlite3.connect('bd/file.db') as db:
-#         cursor = db.cursor()
-#         query = """SELECT id FROM images ORDER BY id DESC LIMIT 1"""
-#         cursor.execute(query)
-#         result = cursor.fetchall()
-#         for i in result:
-#             maxVal = i[0]
-#         db.commit()
-#         return maxVal
 
 def true_answers(id):
     with sqlite3.connect('bd/file.db') as db:

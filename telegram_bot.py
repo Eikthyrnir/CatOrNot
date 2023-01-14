@@ -6,7 +6,7 @@ from main_cat_recognizer import CATorNOT
 import telebot, time
 from bd import *
 # from cat_recognizer import CatRecognizer
-tconv = lambda x: time.strftime("%H:%M:%S %d.%m.%Y", time.localtime(x))
+
 bot = telebot.TeleBot('5982274359:AAHBxZM7_42LBESOhsL_EnvDm_6b3GAWGOM')
 get_connect()
 def download_photo(message):
@@ -18,6 +18,9 @@ def download_photo(message):
         new_file.write(downloaded_file)
     return dest
 
+def message_time_as_str(message):
+    str_time = time.strftime("%H:%M:%S %d.%m.%Y", time.localtime(message))
+    return str_time
 
 # class AlwaysFalseRecognizer(CatRecognizer):
 #     def is_cat(self, image_path: str) -> bool:
@@ -28,19 +31,18 @@ def download_photo(message):
 def get_user_id(message):
     return message.from_user.id
 
-def take_and_insert_variables(message, file_name):
-    tg_file_id = file_name
+def save_img_recognition_results(message, file_name):
+    tg_file_id = message.photo[-1].file_id
     user_id = get_user_id(message)
-    is_cat = CATorNOT(tg_file_id)
-    uploaded_at = tconv(message.date)
-    # max_id = get_max_id(user_id)
+    is_cat = CATorNOT(file_name)
+    uploaded_at = message_time_as_str(message.date)
     insert_data(tg_file_id, user_id, is_cat, uploaded_at)
     return is_cat
 
 @bot.message_handler(content_types=['photo'])
 def photo(message):
     file_name = download_photo(message)
-    is_cat = take_and_insert_variables(message, file_name)
+    is_cat = save_img_recognition_results(message, file_name)
     bot.send_message(message.chat.id, is_cat)
     os.remove(file_name)
 
