@@ -28,21 +28,21 @@ def message_time_as_str(message):
 #
 # cat_recognizer = AlwaysFalseRecognizer()
 
+
 def get_user_id(message):
     return message.from_user.id
 
-def save_img_recognition_results(message, file_name):
+def save_img_recognition_results(message, is_cat):
     tg_file_id = message.photo[-1].file_id
     user_id = get_user_id(message)
-    is_cat = CATorNOT(file_name)
     uploaded_at = message_time_as_str(message.date)
     insert_data(tg_file_id, user_id, is_cat, uploaded_at)
-    return is_cat
 
 @bot.message_handler(content_types=['photo'])
 def photo(message):
     file_name = download_photo(message)
-    is_cat = save_img_recognition_results(message, file_name)
+    is_cat = CATorNOT(file_name)
+    save_img_recognition_results(message, is_cat)
     bot.send_message(message.chat.id, is_cat)
     os.remove(file_name)
 
