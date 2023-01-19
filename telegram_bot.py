@@ -1,33 +1,46 @@
 import os
 import threading
-
-import telebot
-from telebot import types
-
-from cat_recognizer import CatRecognizer
+import sqlite3
+from keras_cat_recognizer import KerasCatRecognizer
+import telebot, time
+from bd import *
 
 bot = telebot.TeleBot('5982274359:AAHBxZM7_42LBESOhsL_EnvDm_6b3GAWGOM')
+get_connect()
 
 def download_photo(message):
     file_id = message.photo[-1].file_id
     file_info = bot.get_file(file_id)
     downloaded_file = bot.download_file(file_info.file_path)
-    dest = 'photos/' + str(threading.get_ident()) + '.jpg'
+    dest = str(threading.get_ident())
     with open(dest, 'wb') as new_file:
         new_file.write(downloaded_file)
-        return dest
+    return dest
 
+def message_time_as_str(message):
+    str_time = time.strftime("%H:%M:%S %d.%m.%Y", time.localtime(message))
+    return str_time
 
-class AlwaysFalseRecognizer(CatRecognizer):
-    def is_cat(self, image_path: str) -> bool:
-        return False
+def get_user_id(message):
+    return message.from_user.id
 
-cat_recognizer = AlwaysFalseRecognizer()
+def save_img_recognition_results(message, is_cat):
+    tg_file_id = message.photo[-1].file_id
+    user_id = get_user_id(message)
+    uploaded_at = message_time_as_str(message.date)
+    insert_data(tg_file_id, user_id, is_cat, uploaded_at)
+
+recognition_answers = {True:  'Cat',
+                       False: 'Not a cat'}
+
+cat_recognizer = KerasCatRecognizer()
 
 @bot.message_handler(content_types=['photo'])
 def photo(message):
     file_name = download_photo(message)
-    bot.send_message(message.chat.id, cat_recognizer.is_cat(file_name))
+    is_cat = cat_recognizer.is_cat(file_name)
+    save_img_recognition_results(message, is_cat)
+    bot.send_message(message.chat.id, recognition_answers[is_cat])
     os.remove(file_name)
 
 
@@ -37,9 +50,38 @@ def start(message):
                                       '- /statistics\n'
                                       '- /help</b>', parse_mode = 'html')
 
+
+
+
 @bot.message_handler(commands=['statistics'])
 def statistics(message):
-    bot.send_message(message.chat.id, '<b>You haven\'t sent a photo yet</b>', parse_mode = 'html')
+    bot.send_message(message.chat.id, '<b>You haven\'t \n'
+                                      '- /Count_cats\n'
+                                      '- /Count_NotCats\n'
+                                      '- /Count_sent_photos\n'
+                                      '- /My_id</b>', parse_mode = 'html')
+
+@bot.message_handler(commands = ['My_id'])
+def my_id(message):
+    bot.send_message(message.chat.id, get_user_id(message))
+
+@bot.message_handler(commands = ['Count_cats'])
+def count_cats(message):
+    user_id = get_user_id(message)
+    sum = true_answers(user_id)
+    bot.send_message(message.chat.id, 'You sent '+ '<b>'+str(sum)+'</b>'+' photos with Cats', parse_mode = 'html')
+
+@bot.message_handler(commands = ['Count_NotCats'])
+def count_not_cats(message):
+    user_id = get_user_id(message)
+    sum = false_answers(user_id)
+    bot.send_message(message.chat.id, 'You sent '+ '<b>'+str(sum)+'</b>'+' photos where no Cats', parse_mode = 'html')
+
+@bot.message_handler(commands = ['Count_sent_photos'])
+def count_all_cats(message):
+    user_id = get_user_id(message)
+    sum = all_photos(user_id)
+    bot.send_message(message.chat.id, 'You sent '+ '<b>'+str(sum)+'</b>'+' of all the time', parse_mode = 'html')
 
 @bot.message_handler(commands=['help'])
 def help(message):
