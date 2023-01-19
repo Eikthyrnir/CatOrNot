@@ -39,7 +39,7 @@ Enjoy
 
 In order to run the application you need:
  - access to the Internet
- - 2GB+ of RAM
+ - 500MB+ of RAM
  - free space on disk
 
 To run this project you will need to download and install 

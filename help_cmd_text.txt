@@ -7,10 +7,3 @@ Have you ever seen a picture of catloaf that looks so much like a real loaf of b
 🐈 Get an answer!
 
 📷 Supported image formats: JPG, [...]
-
-📈 Statistics:
- - Number of images checked
- - Number of images with cats
- - Percentage of cat pictures
-(example: "OMG, cats are everywhere! 80% of images you've checked had cats in them.")
- - [other statistics]
