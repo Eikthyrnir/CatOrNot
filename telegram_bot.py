@@ -1,6 +1,5 @@
 import os
 import threading
-import sqlite3
 from keras_cat_recognizer import KerasCatRecognizer
 import telebot, time
 from bd import *
