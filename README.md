@@ -34,7 +34,30 @@ Enjoy
 
 # **How to deploy code to your server?**
 
-Follow instructions from [deploy.md](./deploy.md) file
+
+## Getting Started
+
+In order to run the application you need:
+ - access to the Internet
+ - 2GB+ of RAM
+ - free space on disk
+
+To run this project you will need to download and install 
+python3 and its libraries: pyTelegramBotAPI, tensorflow: 
+keras, opencv: cv2, numpy.  
+
+You can install all of these libraries on Linux by first 
+downloading the project, then opening terminal, going to 
+project directory on your PC and executing command 
+`pip install -r requirements.txt`
+
+## Running
+
+When everything is installed you can download the project 
+if you haven't done it yet and run file **telegram_bot.py** by
+opening terminal, going to project directory and executing command
+`python telegram_bot.py`. Now bot is running in Telegram and you 
+can use it.
 
 # **About project**
 
