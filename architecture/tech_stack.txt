@@ -1,0 +1,21 @@
+telegram bot part:
+  - python3
+  - Telegram Bot API implementation:
+      pyTelegramBotAPI
+
+image recognition part:
+  - python3
+  - tensorflow:
+    - keras
+  - opencv:
+      cv2
+  - numpy
+
+database:
+  - sqlite
+
+---
+
+datset sources:
+  - https://thiscatdoesnotexist.com
+  - https://picsum.photos

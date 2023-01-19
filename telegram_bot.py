@@ -7,6 +7,7 @@ from bd import *
 
 bot = telebot.TeleBot('5982274359:AAHBxZM7_42LBESOhsL_EnvDm_6b3GAWGOM')
 get_connect()
+
 def download_photo(message):
     file_id = message.photo[-1].file_id
     file_info = bot.get_file(file_id)
@@ -98,3 +99,4 @@ def all(message):
         bot.send_message(message.chat.id, 'Please, choose another command: \nhi\ninfo')
 
 bot.polling(none_stop = True)
+

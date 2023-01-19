@@ -1,6 +1,7 @@
-import requests
-import time
 import os.path
+import time
+
+import requests
 
 for i in range(2500):
     cats = "https://thiscatdoesnotexist.com/"
